@@ -13,6 +13,7 @@ import { ethers } from 'ethers';
 import { toast } from 'sonner';
 import CryptoRates from './CryptoRates';
 
+
 export default function PaymentPlatform() {
   const [walletInfo, setWalletInfo] = useState<{
     address: string;
@@ -30,6 +31,7 @@ export default function PaymentPlatform() {
     privateKey: string;
     mnemonic: string;
   } | null>(null);
+
 
   useEffect(() => {
     const fetchExchangeRates = async () => {
@@ -107,8 +109,44 @@ export default function PaymentPlatform() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-2">Cross-Border Payments</h1>
-        <p className="text-muted-foreground">Fast, secure blockchain payments across borders</p>
+      
+    <nav className="flex justify-between items-center py-4 px-6 bg-white shadow-md">
+      <div className="text-xl font-bold text-black">
+        CROSS-CRYPTO-PLATFORM
+      </div>
+      <ul className="flex space-x-6 text-sm font-medium text-gray-700">
+        <li className="hover:text-black">
+          <a href="#home">Home</a>
+        </li>
+        <li className="hover:text-black">
+          <a href="#about">About</a>
+        </li>
+        <li className="hover:text-black">
+          <a href="#services">Services</a>
+        </li>
+        <li className="hover:text-black">
+          <a href="#team">Team</a>
+        </li>
+        <li className="hover:text-black relative group">
+          <a href="#more">More</a>
+          <ul className="absolute hidden group-hover:block bg-white shadow-lg mt-2 rounded">
+            <li className="px-4 py-2 hover:bg-gray-100">
+              <a href="#option1">Option 1</a>
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-100">
+              <a href="#option2">Option 2</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <button className="px-4 py-2 border border-black rounded hover:bg-black hover:text-white transition-all duration-200">
+        CONTACT
+      </button>
+    </nav>
+
+
+
+
       </header>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -209,44 +247,86 @@ export default function PaymentPlatform() {
       </div>
 
       <Card className="mt-8">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5" />
-            Transaction History
-          </CardTitle>
-          <CardDescription>Your recent payment activities</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-2">Date</th>
-                  <th className="text-left py-2">From</th>
-                  <th className="text-left py-2">To</th>
-                  <th className="text-left py-2">Amount</th>
-                  <th className="text-left py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactions.map((tx, index) => (
-                  <tr key={index} className="border-b">
-                    <td className="py-2">{new Date(tx.timestamp).toLocaleDateString()}</td>
-                    <td className="py-2 font-mono">{tx.from.slice(0, 8)}...</td>
-                    <td className="py-2 font-mono">{tx.to.slice(0, 8)}...</td>
-                    <td className="py-2">
-                      {tx.amount} {tx.currency}
-                    </td>
-                    <td className="py-2">
-                      <span className="text-green-500">Completed</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">
+      <History className="h-5 w-5" />
+      Transaction History
+    </CardTitle>
+    <CardDescription>Your recent payment activities</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead>
+          <tr className="border-b">
+            <th className="text-left py-2">Date</th>
+            <th className="text-left py-2">From</th>
+            <th className="text-left py-2">To</th>
+            <th className="text-left py-2">Amount</th>
+            <th className="text-left py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            {
+              timestamp: Date.now(),
+              from: '0x1234567890abcdef',
+              to: '0xfedcba0987654321',
+              amount: 0.5,
+              currency: 'ETH',
+              status: 'Completed',
+            },
+            {
+              timestamp: Date.now() - 86400000,
+              from: '0xabcdef1234567890',
+              to: '0x1234567890abcdef',
+              amount: 1.25,
+              currency: 'ETH',
+              status: 'Completed',
+            },
+            {
+              timestamp: Date.now() - 172800000,
+              from: '0x9876543210fedcba',
+              to: '0xabcdef1234567890',
+              amount: 2,
+              currency: 'ETH',
+              status: 'Completed',
+            },
+            {
+              timestamp: Date.now() - 259200000,
+              from: '0x1122334455667788',
+              to: '0x876543210fedcba9',
+              amount: 0.75,
+              currency: 'ETH',
+              status: 'Completed',
+            },
+            {
+              timestamp: Date.now() - 345600000,
+              from: '0xaabbccddeeff0011',
+              to: '0x9988776655443322',
+              amount: 0.95,
+              currency: 'ETH',
+              status: 'Completed',
+            },
+          ].map((tx, index) => (
+            <tr key={index} className="border-b">
+              <td className="py-2">{new Date(tx.timestamp).toLocaleDateString()}</td>
+              <td className="py-2 font-mono">{tx.from.slice(0, 8)}...</td>
+              <td className="py-2 font-mono">{tx.to.slice(0, 8)}...</td>
+              <td className="py-2">
+                {tx.amount} {tx.currency}
+              </td>
+              <td className="py-2">
+                <span className="text-green-500">{tx.status}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </CardContent>
+</Card>
+
 
       <Dialog open={showNewWallet} onOpenChange={setShowNewWallet}>
         <DialogContent>
