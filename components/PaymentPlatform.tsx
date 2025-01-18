@@ -105,108 +105,145 @@ export default function PaymentPlatform() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-2">Cross-Border Payments</h1>
-        <p className="text-muted-foreground">Fast, secure blockchain payments across borders</p>
-      </header>
-
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div className="md:col-span-2 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wallet className="h-5 w-5" />
-                Wallet Status
-              </CardTitle>
-              <CardDescription>
-                {walletInfo.address ? 'Connected to MetaMask' : 'Connect your wallet to start'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {walletInfo.address ? (
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Address</p>
-                    <p className="font-mono">{walletInfo.address}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Balance</p>
-                    <p>{walletInfo.balance} ETH</p>
-                  </div>
-                  <Button variant="destructive" onClick={handleDisconnect}>
-                    Disconnect Wallet
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <Button onClick={handleConnect} className="w-full">
-                    Connect Wallet
-                  </Button>
-                  <Button onClick={handleCreateWallet} variant="outline" className="w-full">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create New Wallet
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+    <div className="container mx-auto px-4 pt-8">
+        <header className="mb-8 text-center">
+      
+      <nav className="flex justify-between items-center py-4 px-6 bg-white shadow-md">
+        <div className="text-xl font-bold text-black">
+          CROSS-CRYPTO-PLATFORM
         </div>
+        <ul className="flex space-x-6 text-sm font-medium text-gray-700">
+          <li className="hover:text-black">
+            <a href="#home">Home</a>
+          </li>
+          <li className="hover:text-black">
+            <a href="#about">About</a>
+          </li>
+          <li className="hover:text-black">
+            <a href="#services">Services</a>
+          </li>
+          <li className="hover:text-black">
+            <a href="#team">Team</a>
+          </li>
+          <li className="hover:text-black relative group">
+            <a href="#more">More</a>
+            <ul className="absolute hidden group-hover:block bg-white shadow-lg mt-2 rounded">
+              <li className="px-4 py-2 hover:bg-gray-100">
+                <a href="#option1">Option 1</a>
+              </li>
+              <li className="px-4 py-2 hover:bg-gray-100">
+                <a href="#option2">Option 2</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <button className="px-4 py-2 border border-black rounded hover:bg-black hover:text-white transition-all duration-200">
+          CONTACT
+        </button>
+      </nav>
+        </header>
 
-        <div className="md:col-span-2 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Send className="h-5 w-5" />
-                Send Payment
-              </CardTitle>
-              <CardDescription>Transfer funds to any Ethereum address</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Input
-                    placeholder="Recipient Address"
-                    value={recipientAddress}
-                    onChange={(e) => setRecipientAddress(e.target.value)}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                  <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(exchangeRates).map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button
-                  className="w-full"
-                  onClick={handleSendPayment}
-                  disabled={!walletInfo.signer}
-                >
-                  Send Payment
-                </Button>
+      <div className="px-8 lg:px-16 py-8">
+  <div className="grid gap-8 md:grid-cols-2 grid-auto-rows-[minmax(0,_1fr)]">
+    {/* Wallet Status Card */}
+    <div className="flex flex-col">
+      <Card className="h-full flex-grow">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wallet className="h-5 w-5" />
+            Wallet Status
+          </CardTitle>
+          <CardDescription>
+            {walletInfo.address ? 'Connected to MetaMask' : 'Connect your wallet to start'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {walletInfo.address ? (
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Address</p>
+                <p className="font-mono">{walletInfo.address}</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Balance</p>
+                <p>{walletInfo.balance} ETH</p>
+              </div>
+              <Button variant="destructive" onClick={handleDisconnect}>
+                Disconnect Wallet
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <Button onClick={handleConnect} className="w-full">
+                Connect Wallet
+              </Button>
+              <Button onClick={handleCreateWallet} variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Create New Wallet
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
 
-        <div className="md:col-span-2 lg:col-span-1">
+    {/* Send Payment Card */}
+    <div className="flex flex-col">
+      <Card className="h-full flex-grow">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Send className="h-5 w-5" />
+            Send Payment
+          </CardTitle>
+          <CardDescription>Transfer funds to any Ethereum address</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Input
+                placeholder="Recipient Address"
+                value={recipientAddress}
+                onChange={(e) => setRecipientAddress(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                placeholder="Amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+              <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(exchangeRates).map((currency) => (
+                    <SelectItem key={currency} value={currency}>
+                      {currency}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button
+              className="w-full"
+              onClick={handleSendPayment}
+              disabled={!walletInfo.signer}
+            >
+              Send Payment
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</div>
+
+        <div className="md:col-span-2 lg:col-span-1 px-[4rem]">
           <CryptoRates />
         </div>
-      </div>
+
 
       <Card className="mt-8">
         <CardHeader>
@@ -247,6 +284,51 @@ export default function PaymentPlatform() {
           </div>
         </CardContent>
       </Card>
+
+    <footer className="border-2 border-gray-200 py-6 bg-white mt-20 mb-2 rounded-md">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Left Section: Links */}
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <a
+            href="https://github.com/your-username"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/your-username"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            LinkedIn
+          </a>
+        </div>
+
+        {/* Center Section: Copyright */}
+        <div className="text-center text-sm text-gray-600">
+          © {new Date().getFullYear()} Cross-Border Pay. All rights reserved.
+        </div>
+
+        {/* Right Section: Policies */}
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <a
+            href="/privacy-policy"
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms-and-conditions"
+            className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+          >
+            Terms & Conditions
+          </a>
+        </div>
+      </div>
+    </footer>
 
       <Dialog open={showNewWallet} onOpenChange={setShowNewWallet}>
         <DialogContent>
