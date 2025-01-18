@@ -245,7 +245,7 @@ export default function PaymentPlatform() {
         </div>
 
 
-      <Card className="mt-8">
+<Card className="mt-8 mx-[4rem]">
   <CardHeader>
     <CardTitle className="flex items-center gap-2">
       <History className="h-5 w-5" />
@@ -397,3 +397,4 @@ export default function PaymentPlatform() {
       </Dialog>
     </div>
   );
+}
