@@ -12,6 +12,7 @@ import { getExchangeRates, convertCurrency } from '@/lib/api';
 import { ethers } from 'ethers';
 import { toast } from 'sonner';
 import CryptoRates from './CryptoRates';
+import axios from 'axios';
 
 export default function PaymentPlatform() {
   const [walletInfo, setWalletInfo] = useState<{
@@ -19,30 +20,41 @@ export default function PaymentPlatform() {
     balance: string;
     signer: ethers.Signer | null;
   }>({ address: '', balance: '', signer: null });
-  const [amount, setAmount] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const [exchangeRates, setExchangeRates] = useState<Record<string, number>>({});
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [showNewWallet, setShowNewWallet] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState<'ethereum' | 'polygon'>('ethereum');
   const [newWalletInfo, setNewWalletInfo] = useState<{
     address: string;
     privateKey: string;
     mnemonic: string;
   } | null>(null);
-  const [convertedAmount, setConvertedAmount] = useState<string>('0.00');
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [showNewWallet, setShowNewWallet] = useState(false);
+  const [cryptoPrices, setCryptoPrices] = useState({
+    ethereum: 0,
+    matic: 0
+  });
+  const [selectedCryptocurrency, setSelectedCryptocurrency] = useState<'ethereum' | 'matic'>('ethereum');
+  const [amount, setAmount] = useState<string>('0');
+  const [convertedAmount, setConvertedAmount] = useState<string>('0');
 
   useEffect(() => {
-    const fetchExchangeRates = async () => {
+    const fetchPrices = async () => {
       try {
-        const rates = await getExchangeRates();
-        setExchangeRates(rates);
+        const response = await axios.get(
+          'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,matic-network&vs_currencies=usd'
+        );
+        setCryptoPrices({
+          ethereum: response.data['ethereum'].usd,
+          matic: response.data['matic-network'].usd
+        });
       } catch (error) {
-        toast.error('Failed to fetch exchange rates');
+        console.error('Error fetching prices:', error);
       }
     };
-    fetchExchangeRates();
+
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 60000); // Refresh every minute
+    return () => clearInterval(interval);
   }, []);
 
   const switchChain = async (network: 'ethereum' | 'polygon') => {
@@ -98,7 +110,7 @@ export default function PaymentPlatform() {
     try {
       const ethAmount = convertCurrency(
         parseFloat(amount),
-        exchangeRates[selectedCurrency],
+        cryptoPrices[selectedCryptocurrency],
         1
       ).toString();
 
@@ -111,7 +123,7 @@ export default function PaymentPlatform() {
             from: walletInfo.address,
             to: recipientAddress,
             amount,
-            currency: selectedCurrency,
+            currency: selectedCryptocurrency,
             timestamp: new Date().toISOString(),
           },
           ...transactions,
@@ -126,23 +138,13 @@ export default function PaymentPlatform() {
     }
   };
 
-  const calculateConversion = (
-    amount: string,
-    network: 'ethereum' | 'polygon',
-    currency: string,
-    rates: Record<string, number>
-  ) => {
-    if (!amount || !rates) return '0.00';
-    const cryptoPrice = network === 'ethereum' ? rates.ethereum : rates.polygon;
-    const currencyRate = rates[currency] || 1;
-    const usdValue = parseFloat(amount) * cryptoPrice;
-    return (usdValue * currencyRate).toFixed(2);
-  };
-
-  useEffect(() => {
-    const converted = calculateConversion(amount, selectedNetwork, selectedCurrency, exchangeRates);
+  const handleAmountChange = (value: string) => {
+    setAmount(value);
+    const numericValue = parseFloat(value) || 0;
+    const price = cryptoPrices[selectedCryptocurrency] || 0;
+    const converted = (numericValue * price).toFixed(2);
     setConvertedAmount(converted);
-  }, [amount, selectedNetwork, selectedCurrency, exchangeRates]);
+  };
 
   return (
     <div className="container mx-auto px-4 pt-8">
@@ -251,7 +253,7 @@ export default function PaymentPlatform() {
     type="number"
     placeholder="Amount"
     value={amount}
-    onChange={(e) => setAmount(e.target.value)}
+    onChange={(e) => handleAmountChange(e.target.value)}
   />
   <Select value={selectedNetwork} onValueChange={(value) => setSelectedNetwork(value as 'ethereum' | 'polygon')}>
     <SelectTrigger className="w-32">
@@ -262,23 +264,23 @@ export default function PaymentPlatform() {
       <SelectItem value="polygon">Polygon</SelectItem>
     </SelectContent>
   </Select>
-  <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-    <SelectTrigger className="w-32">
-      <SelectValue />
+  <Select
+    value={selectedCryptocurrency}
+    onValueChange={setSelectedCryptocurrency}
+  >
+    <SelectTrigger className="w-[180px]">
+      <SelectValue placeholder="Select currency" />
     </SelectTrigger>
     <SelectContent>
-      {Object.keys(exchangeRates).map((currency) => (
-        <SelectItem key={currency} value={currency}>
-          {currency}
-        </SelectItem>
-      ))}
+      <SelectItem value="ethereum">Ethereum (ETH)</SelectItem>
+      <SelectItem value="matic">Polygon (MATIC)</SelectItem>
     </SelectContent>
   </Select>
 </div>
 <div className="p-4 bg-gray-100 rounded-md">
   <p className="text-sm text-gray-600">Converted Amount:</p>
   <p className="text-lg font-bold">
-    {selectedCurrency} {convertedAmount}
+    ${convertedAmount} USD
   </p>
 </div>
             <Button
@@ -393,7 +395,7 @@ export default function PaymentPlatform() {
         {/* Left Section: Links */}
         <div className="flex flex-col md:flex-row items-center gap-4">
           <a
-            href="https://github.com/your-username"
+            href="https://github.com/realsubhamsahoo"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
@@ -401,7 +403,7 @@ export default function PaymentPlatform() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/your-username"
+            href="https://linkedin.com/in/realsubhamsahoo"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
