@@ -143,7 +143,7 @@ export default function PaymentPlatform() {
       </nav>
         </header>
 
-      <div className="px-8 lg:px-16 py-8">
+        <div className="px-8 lg:px-16 py-8">
   <div className="grid gap-8 md:grid-cols-2 grid-auto-rows-[minmax(0,_1fr)]">
     {/* Wallet Status Card */}
     <div className="flex flex-col">
@@ -187,59 +187,60 @@ export default function PaymentPlatform() {
       </Card>
     </div>
 
-        <div className="md:col-span-2 lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Send className="h-5 w-5" />
-                Send Payment
-              </CardTitle>
-              <CardDescription>Transfer funds to any Ethereum address</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Input
-                    placeholder="Recipient Address"
-                    value={recipientAddress}
-                    onChange={(e) => setRecipientAddress(e.target.value)}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Input
-                    type="number"
-                    placeholder="Amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
-                  <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(exchangeRates).map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button
-                  className="w-full"
-                  onClick={handleSendPayment}
-                  disabled={!walletInfo.signer}
-                >
-                  Send Payment
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+    {/* Send Payment Card */}
+    <div className="flex flex-col">
+      <Card className="h-full flex-grow">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Send className="h-5 w-5" />
+            Send Payment
+          </CardTitle>
+          <CardDescription>Transfer funds to any Ethereum address</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Input
+                placeholder="Recipient Address"
+                value={recipientAddress}
+                onChange={(e) => setRecipientAddress(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                placeholder="Amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+               <Select>
+      <SelectTrigger className="w-32">
+        <SelectValue placeholder="ETH" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="ETH">ETH</SelectItem>
+        <SelectItem value="POL">POL</SelectItem>
+      </SelectContent>
+    </Select>
+            </div>
+            <Button
+              className="w-full"
+              onClick={handleSendPayment}
+              disabled={!walletInfo.signer}
+            >
+              Send Payment
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+</div>
 
         <div className="md:col-span-2 lg:col-span-1 px-[4rem]">
           <CryptoRates />
         </div>
+
 
 
 <Card className="mt-8 mx-[4rem]">
