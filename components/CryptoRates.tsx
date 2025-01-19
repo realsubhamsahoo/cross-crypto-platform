@@ -5,6 +5,8 @@ import { RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getCryptoRates } from '@/lib/api';
+import { FaEthereum, FaDollarSign } from 'react-icons/fa';
+import { SiPolygon, SiTether } from 'react-icons/si';
 
 interface CryptoRates {
   ethereum: number;
@@ -51,21 +53,33 @@ export default function CryptoRates() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">Ethereum</p>
-            <p className="text-2xl font-bold">${rates?.ethereum.toFixed(2)}</p>
+          <div className="space-y-1 flex items-center gap-3">
+            <FaEthereum className="h-6 w-6 text-blue-500" />
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Ethereum</p>
+              <p className="text-2xl font-bold">${rates?.ethereum.toFixed(2)}</p>
+            </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">USDT</p>
-            <p className="text-2xl font-bold">${rates?.usdt.toFixed(2)}</p>
+          <div className="space-y-1 flex items-center gap-3">
+            <SiTether className="h-6 w-6 text-green-500" />
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">USDT</p>
+              <p className="text-2xl font-bold">${rates?.usdt.toFixed(2)}</p>
+            </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">Polygon</p>
-            <p className="text-2xl font-bold">${rates?.polygon.toFixed(2)}</p>
+          <div className="space-y-1 flex items-center gap-3">
+            <SiPolygon className="h-6 w-6 text-purple-500" />
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Polygon</p>
+              <p className="text-2xl font-bold">${rates?.polygon.toFixed(2)}</p>
+            </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-muted-foreground">USDC</p>
-            <p className="text-2xl font-bold">${rates?.usdc.toFixed(2)}</p>
+          <div className="space-y-1 flex items-center gap-3">
+            <FaDollarSign className="h-6 w-6 text-yellow-500" />
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">USDC</p>
+              <p className="text-2xl font-bold">${rates?.usdc.toFixed(2)}</p>
+            </div>
           </div>
         </div>
       </CardContent>
