@@ -282,7 +282,7 @@ export default function PaymentPlatform() {
         {/* Left Section: Links */}
         <div className="flex flex-col md:flex-row items-center gap-4">
           <a
-            href="https://github.com/your-username"
+            href="https://linkedin.com/in/realsubhamsahoo/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
@@ -290,7 +290,7 @@ export default function PaymentPlatform() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/your-username"
+            href="https://github.com/realsubhamsahoo/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
