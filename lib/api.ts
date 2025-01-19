@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const EXCHANGE_RATE_API = 'https://api.exchangerate-api.com/v4/latest/USD';
-const CRYPTO_API = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,tether,matic-network,usd-coin&vs_currencies=usd';
+const CRYPTO_API = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,tether,matic-network,usd-coin,bitcoin,chainlink&vs_currencies=usd';
 
 export const getExchangeRates = async () => {
   try {
@@ -20,7 +20,9 @@ export const getCryptoRates = async () => {
       ethereum: response.data.ethereum.usd,
       usdt: response.data.tether.usd,
       polygon: response.data['matic-network'].usd,
-      usdc: response.data['usd-coin'].usd
+      usdc: response.data['usd-coin'].usd,
+      bitcoin: response.data.bitcoin.usd,      
+      chainlink: response.data.chainlink.usd  
     };
   } catch (error) {
     console.error('Error fetching crypto rates:', error);
