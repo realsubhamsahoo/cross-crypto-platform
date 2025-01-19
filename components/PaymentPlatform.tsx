@@ -31,6 +31,7 @@ export default function PaymentPlatform() {
     privateKey: string;
     mnemonic: string;
   } | null>(null);
+  const [convertedAmount, setConvertedAmount] = useState<string>('0.00');
 
   useEffect(() => {
     const fetchExchangeRates = async () => {
@@ -80,134 +81,7 @@ export default function PaymentPlatform() {
       setNewWalletInfo({
         ...wallet,
         mnemonic: wallet.mnemonic || '',
-      });      // Add this state if not already present
-      // Remove duplicate state declaration and useEffect as they are already declared elsewhere
-      
-      // Find the Send Payment card content and update it:
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <Input
-              placeholder="Recipient Address"
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Select value={selectedNetwork} onValueChange={(value) => setSelectedNetwork(value as 'ethereum' | 'polygon')}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ethereum">Ethereum</SelectItem>
-                <SelectItem value="polygon">Polygon</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(exchangeRates).map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {/* Add this new div for converted amount display */}
-          <div className="p-4 bg-gray-100 rounded-md">
-            <p className="text-sm text-gray-600">Equivalent Amount:</p>
-            <p className="text-lg font-bold">
-              {selectedCurrency} {convertedAmount}
-            </p>
-          </div>
-          <Button
-            className="w-full"
-            onClick={handleSendPayment}
-            disabled={!walletInfo.signer}
-          >
-            Send Payment
-          </Button>
-        </div>
-      </CardContent>      // Add this state if not already present
-      
-      // Add this useEffect after other useEffects
-      useEffect(() => {
-        const calculateConversion = () => {
-          if (!amount || !exchangeRates) return;
-          const cryptoPrice = selectedNetwork === 'ethereum' 
-            ? exchangeRates.ethereum 
-            : exchangeRates.polygon;
-          const currencyRate = exchangeRates[selectedCurrency] || 1;
-          const usdValue = parseFloat(amount) * cryptoPrice;
-          setConvertedAmount((usdValue * currencyRate).toFixed(2));
-        };
-        calculateConversion();
-      }, [amount, selectedNetwork, selectedCurrency, exchangeRates]);
-      
-      // Find the Send Payment card content and update it:
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <Input
-              placeholder="Recipient Address"
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              placeholder="Amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Select value={selectedNetwork} onValueChange={(value) => setSelectedNetwork(value as 'ethereum' | 'polygon')}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ethereum">Ethereum</SelectItem>
-                <SelectItem value="polygon">Polygon</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(exchangeRates).map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {/* Add this new div for converted amount display */}
-          <div className="p-4 bg-gray-100 rounded-md">
-            <p className="text-sm text-gray-600">Equivalent Amount:</p>
-            <p className="text-lg font-bold">
-              {selectedCurrency} {convertedAmount}
-            </p>
-          </div>
-          <Button
-            className="w-full"
-            onClick={handleSendPayment}
-            disabled={!walletInfo.signer}
-          >
-            Send Payment
-          </Button>
-        </div>
-      </CardContent>
+      });
       setShowNewWallet(true);
       toast.success('New wallet created successfully');
     } catch (error) {
@@ -586,4 +460,3 @@ export default function PaymentPlatform() {
     </div>
   );
 }
-const [convertedAmount, setConvertedAmount] = useState('0.00');
