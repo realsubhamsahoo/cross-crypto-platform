@@ -202,18 +202,15 @@ export default function PaymentPlatform() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
-              <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                <SelectTrigger className="w-32">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(exchangeRates).map((currency) => (
-                    <SelectItem key={currency} value={currency}>
-                      {currency}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+               <Select>
+      <SelectTrigger className="w-32">
+        <SelectValue placeholder="ETH" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="ETH">ETH</SelectItem>
+        <SelectItem value="POL">POL</SelectItem>
+      </SelectContent>
+    </Select>
             </div>
             <Button
               className="w-full"
@@ -232,7 +229,6 @@ export default function PaymentPlatform() {
         <div className="md:col-span-2 lg:col-span-1 px-[2rem] md:px-[4rem] ">
           <CryptoRates />
         </div>
-
 
 <Card className="mt-8 mx-[2rem] md:mx-[4rem]">
   <CardHeader>
